@@ -1,54 +1,64 @@
 package com.example.appprojectsfetcher.model;
 
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Repository {
-    @SerializedName("name")
-    private String name;
-    @SerializedName("description")
-    private String description;
-    @SerializedName("score")
-    private String score;
+import java.util.ArrayList;
+import java.util.List;
 
-    @SerializedName("owner")
-    private Owner owner;
+public class Repository implements Parcelable {
+    private long total_count;
+    private List<Item> items=new ArrayList<>();
 
-    public Repository(String name, String description, String score, Owner owner) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
-        this.owner = owner;
+    public Repository(long total_count, List<Item> items) {
+        this.total_count = total_count;
+        this.items = items;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
-    public String getName() {
-        return name;
+    protected Repository(Parcel in) {
+        total_count = in.readLong();
+        in.readList(items,Item.class.getClassLoader());
+    }
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeLong(total_count);
+
+        parcel.writeList(items);
+
+    }
+    public long getTotal_count() {
+        return total_count;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTotal_count(long total_count) {
+        this.total_count = total_count;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public static final Creator<Repository> CREATOR = new Creator<Repository>() {
+        @Override
+        public Repository createFromParcel(Parcel in) {
+            return new Repository(in);
+        }
 
-    public String getScore() {
-        return score;
-    }
+        @Override
+        public Repository[] newArray(int size) {
+            return new Repository[size];
+        }
+    };
 
-    public void setScore(String score) {
-        this.score = score;
-    }
+
 }
