@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.appprojectsfetcher.R;
-import com.example.appprojectsfetcher.model.Repository;
+import com.example.appprojectsfetcher.model.Item;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepositoryViewHolder> {
 
 
-    private ArrayList<Repository> dataList;
+    private List<Item> dataList;
     private Activity activity;
 
-    public RepositoryAdapter(ArrayList<Repository> dataList , Activity activity) {
+    public RepositoryAdapter(List<Item> dataList , Activity activity) {
         this.dataList = dataList;
         this.activity=activity;
     }
@@ -38,17 +38,18 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
     @Override
     public void onBindViewHolder(RepositoryViewHolder holder, int position) {
         holder.txt_repository_name.setText(dataList.get(position).getName());
-        holder.txt_repository_score.setText(dataList.get(position).getScore());
+        holder.txt_repository_score.setText(String.valueOf(dataList.get(position).getStargazers_count()));
         holder.txt_repository_description.setText(dataList.get(position).getDescription());
         holder.txt_owner_login.setText(dataList.get(position).getOwner().getLogin());
 
-        Glide.with(activity).load(dataList.get(position).getOwner().getAvatarUrl()).into(holder.image_owner_avater);
+        Glide.with(activity).load(dataList.get(position).getOwner().getAvatar_url()).into(holder.image_owner_avater);
 
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+
+        return dataList == null ? 0 :dataList.size() ;
     }
 
     class RepositoryViewHolder extends RecyclerView.ViewHolder {
