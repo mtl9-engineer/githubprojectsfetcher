@@ -17,8 +17,10 @@ import com.example.appprojectsfetcher.model.Repository;
 import com.example.appprojectsfetcher.network.GetRepositoryDataService;
 import com.example.appprojectsfetcher.network.RetrofitInstance;
 import com.example.appprojectsfetcher.pagination.PaginationScrollListener;
+import com.example.appprojectsfetcher.utils.DateConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
     private int TOTAL_PAGES = 33;
     private boolean isLastPage = false;
     private int currentPage= PAGE_NUMBER;
+    private String formattedDate;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DateConverter converter = new DateConverter();
+        Date date = converter.subtractDays();
+        formattedDate = converter.formatDate(date);
         Repository repository = new Repository();
         adapter = new RepositoryAdapter(repository.getItems(), MainActivity.this);
 
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         GetRepositoryDataService service = RetrofitInstance.getRetrofitInstance().create(GetRepositoryDataService.class);
 
-        Call<Repository> call = service.getRepositoyData(currentPage);
+        Call<Repository> call = service.getRepositoyData(currentPage,"created:>"+formattedDate);
         if(page == 0){
             progressBar.setVisibility(View.GONE);
         }
