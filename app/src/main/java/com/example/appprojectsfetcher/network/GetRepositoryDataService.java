@@ -1,7 +1,6 @@
 package com.example.appprojectsfetcher.network;
 
 import com.example.appprojectsfetcher.model.Repository;
-import com.example.appprojectsfetcher.utils.DateConverter;
 
 
 import retrofit2.Call;
